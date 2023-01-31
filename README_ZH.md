@@ -18,7 +18,7 @@ _.each(new Set([1, 2, 3]), num=>{})
 ## Func.js
 Func.js是一个TS纯函数库，未开发者提供更便捷，全面及多样性的声明式开发体验。
 
-- 📑 文档 - [Gitee](https://holyhigh2.gitee.io/func.js/) | [Github](https://holyhigh2.gitee.io/func.js/)
+- [📑 文档](https://holyhigh2.github.io/func.js/)
 - [⚡ 在线体验](https://stackblitz.com/edit/func-js?file=index.ts)
 
 ## 特性
@@ -27,7 +27,7 @@ Func.js是一个TS纯函数库，未开发者提供更便捷，全面及多样�
 - 惰性计算
 - 树操作API
 - 完整的日期/数字格式化器
-- [查看更多...]()
+- [查看更多...](https://holyhigh2.github.io/func.js/api/readme/)
 
 ## 快速上手
 1. 安装
