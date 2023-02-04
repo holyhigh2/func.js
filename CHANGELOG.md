@@ -2,6 +2,12 @@
 
 Func.js 更新记录
 
+## [2.2.4] - 2023/2/4
+
+### optimize
+
+- move info & noConflict into utils module
+
 ## [2.2.2] - 2023/1/14
 
 ### 新增

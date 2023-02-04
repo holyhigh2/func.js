@@ -1,6 +1,6 @@
 {
   "name": "@holyhigh/func.js",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "A modular&consistent pure function toolkit for javascript",
   "main": "index.js",
   "module": "index.esm.js",
@@ -10,10 +10,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://gitee.com/holyhigh2/func.js"
+    "url": "https://github.com/holyhigh2/func.js"
   },
-  "bugs": "https://gitee.com/holyhigh2/func.js/issues/new",
-  "homepage": "https://holyhigh2.gitee.io/func.js/#/",
+  "bugs": "https://github.com/holyhigh2/func.js/issues/new",
+  "homepage": "https://holyhigh2.github.io/func.js/",
   "keywords": [
     "js",
     "utils",

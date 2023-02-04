@@ -17,7 +17,7 @@ _.each(new Set([1, 2, 3]), num=>{})
 ## Func.js
 Func.js is a TS library of pure functions, providing developers with a more convenient, comprehensive, and diversified declarative programming experience.
 
-- [📑 Documentation](https://holyhigh2.github.io/func.js/)
+- 📑 Documentation - [Gitee](https://holyhigh2.gitee.io/func.js/) | [Github](https://holyhigh2.gitee.io/func.js/)
 - [⚡ Play on StackBlitz](https://stackblitz.com/edit/func-js?file=index.ts)
 
 ## Features
@@ -25,8 +25,8 @@ Func.js is a TS library of pure functions, providing developers with a more conv
 - **200+** Pure functions
 - Lazy evaluation
 - Tree APIs
-- Full datetime/number formatter
-- [and more...](https://holyhigh2.github.io/func.js/api/readme/)
+- Full dateTime/number formatter
+- [and more...]()
 
 ## Quick start
 1. install

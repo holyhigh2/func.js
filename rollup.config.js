@@ -72,7 +72,7 @@ const targets = [
         },
       }),
       commonjs(),
-      terser(),
+      // terser(),
       banner2(
         () => `/**
    * ${pkg.name} v${pkg.version}
@@ -122,7 +122,7 @@ readfilelist('./src').forEach((path) => {
     plugins: [
       typescript(),
       commonjs(),
-      terser(),
+      // terser(),
       banner2(
         () => `/**
    * ${pkg.name}/${dirName} v${pkg.version}

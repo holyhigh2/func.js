@@ -30,16 +30,12 @@ mixin({
   ...array,
   ...template,
   ...tree,
-})
-const namespace: Record<string, any> = _
+});
 
-/**
- * 默认导出。在umd模式下可通过 _ 直接访问
- */
-namespace.VERSION = packageInfo.version
-namespace.bind = functions.bind // 覆盖原型
-namespace.chain = chain
-namespace.mixin = mixin
+(_ as any).VERSION = packageInfo.version as any
+(_ as any).bind = functions.bind  as any// 覆盖原型
+(_ as any).chain = chain as any
+(_ as any).mixin = mixin as any
 
 /**
  * 当前版本
@@ -60,49 +56,12 @@ export * from './tree'
 export { chain, mixin }
 
 //bind _
-const prevRef = (self as any)._ as any
-;(self as any)._ = _
-
-/**
- * 当通过非esm方式引用函数库时，函数库会默认挂载全局变量<code>_</code>。
- * 如果项目中存在其它以该变量为命名空间的函数库（如lodash、underscore等）则会发生命名冲突。
- * 该函数可以恢复全局变量为挂在前的引用，并返回func.js命名空间
- * **仅在UMD模式中可用**
- * @example
- * // 返回func.js并重置全局命名空间 _
- * console.log(_.noConflict())
- *
- * @returns 返回func.js命名空间
- * @since 2.0.0
- */
-namespace.noConflict = function (): Record<string, any> {
-  if (is.isDefined(prevRef)) {
-    ;(self as any)._ = prevRef
-  }
-  return namespace
+const ctx = globalThis as any
+if(ctx._$func){
+  setTimeout(function(){
+    ctx.__f_prev = ctx._
+    ctx._ = _
+  },0);
 }
 
-/**
- * 如果忘了文档地址可以执行这个函数
- *
- * @since 2.0.0
- */
-namespace.info = function () {
-  // welcome info
-  const ssAry: string[] = []
-  ;['248,116,51', '227,80,29', '179,55,15'].forEach((v, i) => {
-    const cu = 'background:rgb(' + v + ');'
-    if (i < 2) {
-      ssAry[i] = ssAry[5 - 1 - i] = cu
-    } else {
-      ssAry[i] = 'color:#fff;' + cu
-    }
-  })
-  console.info(
-    `%c %c %c Func - The Functional APIs | v${packageInfo.version} %c %c `,
-    ...ssAry,
-    '🚀 https://holyhigh2.gitee.io/func/'
-  )
-}
-
-export default namespace
+export default _

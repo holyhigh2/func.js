@@ -23,6 +23,7 @@ import { randi } from './math'
 import { prop, toObject } from './object'
 import { padEnd, padZ, substring } from './string'
 import { NonFuncItee } from './types'
+import * as packageInfo from '../package.json'
 
 /**
  * 工具相关操作函数
@@ -332,6 +333,49 @@ const _getNextTime = (lastTime: number) => {
   return t
 }
 
+/**
+ * 如果忘了文档地址可以执行这个函数
+ *
+ * @since 2.0.0
+ */
+function info() {
+  // welcome info
+  const ssAry: string[] = []
+  ;['248,116,51', '227,80,29', '179,55,15'].forEach((v, i) => {
+    const cu = 'background:rgb(' + v + ');'
+    if (i < 2) {
+      ssAry[i] = ssAry[5 - 1 - i] = cu
+    } else {
+      ssAry[i] = 'color:#fff;' + cu
+    }
+  })
+  console.info(
+    `%c %c %c Func - The Functional APIs | v${packageInfo.version} %c %c `,
+    ...ssAry,
+    '🚀 https://github.com/holyhigh2/func.js'
+  )
+}
+
+/**
+ * 当通过非esm方式引用函数库时，函数库会默认挂载全局变量<code>_</code>。
+ * 如果项目中存在其它以该变量为命名空间的函数库（如lodash、underscore等）则会发生命名冲突。
+ * 该函数可恢复全局变量为挂载前的引用，并返回func.js命名空间
+ * **仅在UMD模式中可用**
+ * @example
+ * // 返回func.js并重置全局命名空间 _
+ * console.log(_.noConflict())
+ *
+ * @returns 返回func.js命名空间
+ * @since 2.0.0
+ */
+function noConflict(): Record<string, any> {
+  const ctx = globalThis as any
+  if (ctx._$func) {
+    ctx._ = ctx.__f_prev
+  }
+  return ctx._$func
+};
+
 export {
   uniqueId,
   noop,
@@ -344,4 +388,6 @@ export {
   uuid,
   alphaId,
   snowflakeId,
+  info,
+  noConflict
 }
