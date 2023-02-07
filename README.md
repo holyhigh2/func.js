@@ -26,7 +26,7 @@ Func.js is a TS library of pure functions, providing developers with a more conv
 - Lazy evaluation
 - Tree APIs
 - Full dateTime/number formatter
-- [and more...]()
+- [and more...](https://holyhigh2.github.io/func.js/api/readme/)
 
 ## Quick start
 1. install
