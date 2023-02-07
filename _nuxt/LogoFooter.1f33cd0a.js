@@ -1,0 +1,1 @@
+import{d as o}from"./Container.92acc38e.js";import{l as t,m as e}from"./runtime-core.esm-bundler.3287b943.js";import"./index.538b13da.js";const s=""+globalThis.__publicAssetsURL("logo-footer.png"),r={},c={src:s,style:{height:"24px",width:"auto"}};function _(n,i){return t(),e("img",c)}const p=o(r,[["render",_]]);export{p as default};
