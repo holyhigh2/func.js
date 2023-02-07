@@ -8,8 +8,8 @@
  * 
  * @author holyhigh
  */
-import { compact, flatDeep } from './array'
-import { isNaN, isUndefined } from './is'
+import { flatMap, map } from './collection'
+import { isNil, isUndefined } from './is'
 
 /**
  * 返回一个大于等于min，小于max的随机整数。支持单参数签名
@@ -76,97 +76,194 @@ function randf(min?: number, max?: number): number {
 }
 
 /**
- * 对多个数字或数字列表进行求和并返回结果
+ * 对字符/数字数组/Set进行求和并返回结果
+ * - 对nil值，自动转为0
+ * - 对NaN值，返回NaN
+ * - 对Infinity值，返回Infinity
+ * 
  * @example
- * //10
- * console.log(_.sum(1,2,'3',4))
  * //10
  * console.log(_.sum([1,'2',3,4]))
  * //10
- * console.log(_.sum([1,2],'3',4))
+ * console.log(_.sum([1,'2',3,4,null,undefined]))
+ * //NaN
+ * console.log(_.sum([NaN,'2',3,4]))
+ * //Infinity
+ * console.log(_.sum([Infinity,'2',3,4]))
  * //6
- * console.log(_.sum(new Set([1,2,3]),'a'))
+ * console.log(_.sum(new Set([1,2,3])))
  *
- * @param values 1-n个需要合计的值
+ * @param values 数字/字符数组/Set
+ * @since 2.3
  * @returns
  */
 function sum(
-  ...values: (Set<string | number> | Array<string | number> | number | string)[]
+  values: Set<string | number> | Array<string | number>
 ): number {
+  const vals = map<any>(values,v=>isNil(v)?0:v)
   let rs = 0
-  let ary = flatDeep<any>(values)
-  const f64a = new Float64Array(ary)
+  const f64a = new Float64Array(vals)
   f64a.forEach((v: number) => {
-    rs += v || 0
+    rs += v
   })
   return rs
 }
 
 /**
- * 对多个数字或数字列表计算平均值并返回结果。无效数字不会算在平均计数中
- * @example
- * //2.5
- * console.log(_.avg(1,2,'3',4))
- * //2.5
- * console.log(_.avg([1,'2',3,'a',4]))
- *
- * @param values 1-n个需要合计的值
- * @returns
- */
-function avg(
-  ...values: (Set<string | number> | Array<string | number> | number | string)[]
-): number {
-  let rs = 0
-  let ary = flatDeep<any>(values)
-  const f64a = new Float64Array(ary)
-
-  ;(ary = compact(f64a as any)).forEach((v: number) => {
-    rs += v || 0
-  })
-  return rs / ary.length
-}
-
-/**
- * 返回给定数字序列中最大的一个
+ * 返回给定数字序列中最大的一个。忽略NaN，null，undefined
  * @example
  * //7
- * console.log(_.max(2,3,1,7,4,5))
+ * console.log(_.max([2,3,1,NaN,7,4,null]))
  * //6
- * console.log(_.max(4,[5,[1,2,3],6],'x','y'))
+ * console.log(_.max([4,5,6,'x','y']))
+ * //Infinity
+ * console.log(_.max([4,5,6,Infinity]))
  *
- * @param values 1-n个需要计算的值。如果非数字会自动忽略
+ * @param values 数字/字符数组/Set
  * @returns
- * @since 0.16.0
+ * @since 2.3
  */
 function max(
-  ...values: (Set<string | number> | Array<string | number> | number | string)[]
+  values: Set<string | number> | Array<string | number>
 ): number {
-  let ary = flatDeep<any>(values)
-  let f64a = new Float64Array(ary)
+  const vals = flatMap<any>(values, v => isNil(v)||isNaN(v) ? [] : v)
+  let f64a = new Float64Array(vals)
   f64a.sort()
-  f64a = f64a.filter((v: any) => !isNaN(v))
   return f64a[f64a.length - 1]
 }
 
 /**
- * 返回给定数字序列中最小的一个
+ * 返回给定数字序列中最小的一个。忽略NaN，null，undefined
  * @example
- * //1
- * console.log(_.min(2,3,1,7,4,5))
+ * //-1
+ * console.log(_.min([2,3,1,7,'-1']))
  * //0
- * console.log(_.min(4,[5,[1,2,3],6],0,'x','y'))
- * @param values 1-n个需要计算的值。如果非数字会自动忽略
+ * console.log(_.min([4,3,6,0,'x','y']))
+ * //-Infinity
+ * console.log(_.min([-Infinity,-9999,0,null]))
+ * @param values 数字/字符数组/Set
  * @returns
- * @since 0.16.0
+ * @since 2.3
  */
 function min(
-  ...values: (Set<string | number> | Array<string | number> | number | string)[]
+  values: Set<string | number> | Array<string | number>
 ): number {
-  let ary = flatDeep<any>(values)
-  let f64a = new Float64Array(ary)
+  const vals = flatMap<any>(values, v => isNil(v) || isNaN(v) ? [] : v)
+  let f64a = new Float64Array(vals)
   f64a.sort()
-  f64a = f64a.filter((v: any) => !isNaN(v))
   return f64a[0]
 }
 
-export { randi, randf, sum, max, min, avg }
+/**
+ * a + b
+ * @example
+ * //3
+ * console.log(_.add(1,2))
+ * //1
+ * console.log(_.add(1,null))
+ * //NaN
+ * console.log(_.add(1,NaN))
+ * 
+ * @param a 
+ * @param b 
+ * @returns a+b
+ * @since 2.3
+ */
+function add(a:number,b:number):number{
+  a = isNil(a) ? 0 : a
+  b = isNil(b) ? 0 : b
+  return a + b
+}
+
+/**
+ * a - b
+ * @example
+ * //-1
+ * console.log(_.subtract(1,2))
+ * //1
+ * console.log(_.subtract(1,null))
+ * //NaN
+ * console.log(_.subtract(1,NaN))
+ * 
+ * @param a 
+ * @param b 
+ * @returns a - b
+ * @since 2.3
+ */
+function subtract(a:number,b:number):number{
+  a = isNil(a) ? 0 : a
+  b = isNil(b) ? 0 : b
+  return a - b
+}
+
+/**
+ * a / b
+ * @example
+ * //0.5
+ * console.log(_.divide(1,2))
+ * //Infinity
+ * console.log(_.divide(1,null))
+ * //NaN
+ * console.log(_.divide(1,NaN))
+ * 
+ * @param a 
+ * @param b 
+ * @returns a/b
+ * @since 2.3
+ */
+function divide(a:number,b:number):number{
+  a = isNil(a) ? 0 : a
+  b = isNil(b) ? 0 : b
+  return a / b
+}
+
+/**
+ * a * b
+ * @example
+ * //2
+ * console.log(_.multiply(1,2))
+ * //0
+ * console.log(_.multiply(1,null))
+ * //NaN
+ * console.log(_.multiply(1,NaN))
+ * 
+ * @param a 
+ * @param b 
+ * @returns a*b
+ * @since 2.3
+ */
+function multiply(a:number,b:number):number{
+  a = isNil(a) ? 0 : a
+  b = isNil(b) ? 0 : b
+  return a * b
+}
+
+/**
+ * 对多个数字或数字列表计算平均值并返回结果
+ * @example
+ * //2.5
+ * console.log(_.mean([1,2,'3',4]))
+ * //NaN
+ * console.log(_.mean([1,'2',3,'a',4]))
+ * //2
+ * console.log(_.mean([1,'2',3,null,4]))
+ *
+ * @param values 数字/字符数组/Set
+ * @returns mean value
+ * @since 2.3
+ */
+function mean(values: Set<string | number> | Array<string | number> ):number{
+  const vals = map<any>(values, v => isNil(v) ? 0 : v)
+  let f64a = new Float64Array(vals)
+  let rs = 0
+  f64a.forEach(v=>{
+    rs += v
+  })
+
+  return rs / f64a.length
+}
+
+export { 
+  randi, randf, sum, max, min ,
+  add,divide,mean,multiply,subtract
+}

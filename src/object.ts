@@ -223,12 +223,12 @@ function cloneDeep(
  * console.log(_.cloneDeepWith({d:new Date}).d instanceof Date)
  *
  * @param obj
- * @param  {Function} [handler=identity] (obj[k],k) 自定义赋值处理器，返回赋予新对象[k]的值
+ * @param handler (obj[k],k,obj) 自定义赋值处理器，返回赋予新对象[k]的值。默认 `identity`
  * @returns 被复制的新对象
  */
 function cloneDeepWith(
   obj: Record<UnknownMapKey, any>,
-  handler?: (v: any, k: UnknownMapKey) => any
+  handler?: (v: any, k: UnknownMapKey,obj: Record<UnknownMapKey, any>) => any
 ): any {
   if (!isObject(obj)) return obj
   if (isFunction(obj)) return obj
@@ -239,7 +239,7 @@ function cloneDeepWith(
   copy = new (obj as any).constructor()
   const propNames = Object.keys(obj)
   propNames.forEach((p) => {
-    let newProp = (handler || identity)(obj[p], p)
+    let newProp = (handler || identity)(obj[p], p, obj)
     if (isObject(newProp)) {
       newProp = cloneDeepWith(newProp, handler)
     }
@@ -404,6 +404,34 @@ function set(
     target = tmp
   }
   return obj
+}
+
+/**
+ * 删除obj上path路径对应属性
+ * @param obj 需要设置属性值的对象，如果obj不是对象(isObject返回false)，直接返回obj
+ * @param path 属性路径，可以是索引数字，字符串key，或者多级属性数组
+ * @since 2.3
+ * @returns 成功返回true，失败或路径不存在返回false
+ */
+function unset(
+  obj: Record<UnknownMapKey, any>,
+  path: Array<string | number> | string | number
+): boolean {
+  if (!isObject(obj)) return obj
+  const chain = toPath(path)
+  let target = obj
+  for (let i = 0; i < chain.length; i++) {
+    const seg = chain[i]
+    const nextSeg = chain[i + 1]
+    let tmp = target[seg]
+    if (nextSeg) {
+      tmp = target[seg] = !tmp ? (isNaN(nextSeg as any) ? {} : []) : tmp
+    } else {
+      return delete target[seg]
+    }
+    target = tmp
+  }
+  return false
 }
 
 /**
@@ -893,6 +921,7 @@ export {
   toObject,
   get,
   set,
+  unset,
   keys,
   keysIn,
   values,

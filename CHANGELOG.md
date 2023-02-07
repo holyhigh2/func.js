@@ -1,10 +1,19 @@
 # Changelog
 
-Func.js 更新记录
+## [2.3.0] - 2023/2/7
+### Add
+- math -> add,divide,mean,multiply,subtract
+- object -> unset
+- more test cases
+### Optimize
+- math -> sum, max, min
+- object -> cloneDeepWith
+### Remove
+- math -> avg
 
 ## [2.2.4] - 2023/2/4
 
-### optimize
+### Optimize
 
 - move info & noConflict into utils module
 
