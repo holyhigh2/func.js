@@ -60,11 +60,10 @@ const PLACEHOLDER = void 0
  * console.log(log('info','hi...'))
  *
  * @param fn 需要调用的函数
- * @param  {...any} args 参数可以使用undefined作为占位符，以此来确定不同的实参位置
+ * @param args 参数可以使用undefined作为占位符，以此来确定不同的实参位置
  * @returns 部分应用后的新函数
  */
-function partial(fn: Function, ...args: any[]): Function {
-  if (!isFunction(fn)) throw new Error(`expected a function but got '${fn}'`)
+function partial(fn: any, ...args: any[]): Function {
   return function (...params: any[]) {
     let p = 0
     const applyArgs = args.map((v) => (v === PLACEHOLDER ? params[p++] : v))
@@ -97,8 +96,6 @@ function partial(fn: Function, ...args: any[]): Function {
  */
 function compose(...fns: Function[]): Function {
   return function (...args: any[]) {
-    if (!isFunction(fns[0]))
-      throw new Error(`expected a function but got '${fns[0]}'`)
     let rs = fns[0](...args)
     for (let i = 1; i < fns.length; i++) {
       if (isFunction(fns[i])) {
@@ -163,8 +160,7 @@ function tap<T>(v: T, interceptor: Function): T {
  * @param fn 需要调用的函数
  * @returns 包装后的函数
  */
-function once(fn: Function): Function {
-  if (!isFunction(fn)) throw new Error(`expected a function but got '${fn}'`)
+function once(fn: any): Function {
   let proxy = fn
   return (...args: any[]) => {
     let rtn
@@ -189,8 +185,7 @@ function once(fn: Function): Function {
  * @param [count=0] 计数
  * @returns 包装后的函数
  */
-function after(fn: Function, count?: number): Function {
-  if (!isFunction(fn)) throw new Error(`expected a function but got '${fn}'`)
+function after(fn: any, count?: number): Function {
   const proxy = fn
   let i = count || 0
   let rtn: any
@@ -219,8 +214,7 @@ function after(fn: Function, count?: number): Function {
  * @param [args] 传入定时函数的参数
  * @returns 计时器id
  */
-function delay(fn: Function, wait?: number, ...args: any[]) {
-  if (!isFunction(fn)) throw new Error(`expected a function but got '${fn}'`)
+function delay(fn: any, wait?: number, ...args: any[]): NodeJS.Timeout {
   return setTimeout(() => {
     fn(...args)
   }, wait || 0)
@@ -243,12 +237,11 @@ function delay(fn: Function, wait?: number, ...args: any[]) {
  *
  * @param fn 需要调用的函数
  * @param thisArg fn函数内this所指向的值
- * @param  {...any} [args] 参数可以使用undefined作为占位符，以此来确定不同的实参位置
- * @returns 绑定this的新函数
+ * @param args 参数可以使用undefined作为占位符，以此来确定不同的实参位置
+ * @returns 绑定thisArg的新函数
  * @since 0.17.0
  */
-function bind(fn: Function, thisArg: unknown, ...args: any[]) {
-  if (!isFunction(fn)) throw new Error(`expected a function but got '${fn}'`)
+function bind(fn: any, thisArg: any, ...args: any[]): Function {
   return partial(fn.bind(thisArg), ...args)
 }
 
@@ -273,10 +266,10 @@ function bind(fn: Function, thisArg: unknown, ...args: any[]) {
  * @returns 绑定对象
  * @since 0.17.0
  */
-function bindAll(
-  object: Record<UnknownMapKey, any>,
+function bindAll<T extends Record<UnknownMapKey, any>>(
+  object: T,
   ...methodNames: (string | string[])[]
-) {
+): T{
   const pathList = flatDeep<string>(methodNames)
   each<string>(pathList, (path) => {
     const fn = get<Function>(object, path)
@@ -286,4 +279,23 @@ function bindAll(
   return object
 }
 
-export { fval, partial, compose, alt, tap, once, after, delay, bind, bindAll }
+/**
+ * 通过给定参数调用fn并返回执行结果
+ *
+ * @example
+ * //自动填充参数
+ * _.call(fn,1,2);
+ * //事件
+ * _.call(fn,1,2);
+ *
+ * @param fn 需要执行的函数
+ * @param args 可变参数
+ * @returns 执行结果。如果函数无效或无返回值返回undefined
+ * @since 2.4.0
+ */
+function call(fn:any,...args:any): any{
+  if(!isFunction(fn))return undefined
+  return fn(...args)
+}
+
+export { fval, partial, compose, alt, tap, once, after, delay, bind, bindAll,call }

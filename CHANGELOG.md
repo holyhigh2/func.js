@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.4.0] - 2023/3/19
+### Add
+- functions -> call
+### Optimize
+- functions
+
 ## [2.3.0] - 2023/2/7
 ### Add
 - math -> add,divide,mean,multiply,subtract
