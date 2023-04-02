@@ -1,6 +1,6 @@
 {
   "name": "@holyhigh/func.js",
-  "version": "2.4.0",
+  "version": "2.4.2",
   "description": "A modular&consistent pure function toolkit for javascript",
   "main": "index.js",
   "module": "index.esm.js",

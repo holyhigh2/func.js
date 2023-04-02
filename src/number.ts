@@ -151,7 +151,7 @@ function formatNumber(v: string | number, pattern = '#,##0.00'): string {
       }
       // 处理整数
       let iStr = integer + ''
-      let sym = val < 0 ? '-' : ''
+      let sym = num < 0 ? '-' : ''
       if (iStr[0] === '-' || iStr[0] === '+') {
         sym = iStr[0]
         iStr = iStr.substring(1)

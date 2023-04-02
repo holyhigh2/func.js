@@ -9,7 +9,7 @@
  * @author holyhigh
  */
 import { flatMap, map } from './collection'
-import { isNil, isUndefined } from './is'
+import { isArrayLike, isNil, isUndefined } from './is'
 
 /**
  * 返回一个大于等于min，小于max的随机整数。支持单参数签名
@@ -97,10 +97,19 @@ function randf(min?: number, max?: number): number {
  * @since 2.3
  * @returns
  */
+
+
 function sum(
   values: Set<string | number> | Array<string | number>
-): number {
-  const vals = map<any>(values,v=>isNil(v)?0:v)
+): number
+function sum(...values:any[]):number
+function sum(...values:any[]):number {
+  let ary:any = values
+  if(ary.length === 1 && isArrayLike(ary[0])){
+    ary = ary[0]
+  }
+
+  const vals = map<any>(ary,v=>isNil(v)?0:v)
   let rs = 0
   const f64a = new Float64Array(vals)
   f64a.forEach((v: number) => {

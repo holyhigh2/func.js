@@ -35,7 +35,10 @@ for (let fnName in Cases) {
         JSON.stringify(paramsAry, (k, v: any[]) => {
           return v
             .map((val) => {
-              if (Number.isFinite(val)) return 'Infinity'
+              if(typeof val ==='string')return val
+              if (typeof val === 'number' && !Number.isFinite(val)){
+                return 'Infinity'
+              } 
               if (Number.isNaN(val)) return 'NaN'
               if (val === null) return 'null'
               if (val === undefined) return 'undefined'

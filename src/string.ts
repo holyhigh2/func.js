@@ -51,7 +51,7 @@ function toString(v: any): string {
  * @param str 字符串
  * @returns 对于null/undefined会返回空字符串
  */
-function capitalize(str: string): string {
+function capitalize(str: any): string {
   str = toString(str)
   if (str.length < 1) return str
   return str[0].toUpperCase() + toString(str.substring(1)).toLowerCase()
@@ -67,7 +67,7 @@ function capitalize(str: string): string {
  * @param str
  * @returns 对于null/undefined会返回空字符串
  */
-function trim(str: string): string {
+function trim(str: any): string {
   str = toString(str)
   return str.trim()
 }
@@ -82,7 +82,7 @@ function trim(str: string): string {
  * @param str
  * @returns 对于null/undefined会返回空字符串
  */
-function trimStart(str: string): string {
+function trimStart(str: any): string {
   str = toString(str)
   if (str.trimStart) return str.trimStart()
   return str.replace(/^\s*/, '')
@@ -98,7 +98,7 @@ function trimStart(str: string): string {
  * @param str
  * @returns 对于null/undefined会返回空字符串
  */
-function trimEnd(str: string): string {
+function trimEnd(str: any): string {
   str = toString(str)
   if (str.trimEnd) return str.trimEnd()
   return str.replace(/\s*$/, '')
@@ -115,7 +115,7 @@ function trimEnd(str: string): string {
  * @param len 填充后的字符串长度
  * @returns 填充后的字符串
  */
-function padZ(str: string, len: number): string {
+function padZ(str: any, len: number): string {
   return padStart(str, len, '0')
 }
 /**
@@ -130,7 +130,7 @@ function padZ(str: string, len: number): string {
  * @param [padString=' '] 填充字符串，如果填充后超出指定长度，会自动截取并保留右侧字符串
  * @returns 在原字符串起始填充至指定长度后的字符串
  */
-function padStart(str: string, len: number, padString?: string): string {
+function padStart(str: any, len: number, padString?: string): string {
   str = toString(str)
   if (str.padStart) return str.padStart(len, padString)
 
@@ -160,7 +160,7 @@ function padStart(str: string, len: number, padString?: string): string {
  * @param [padString=' '] 填充字符串，如果填充后超出指定长度，会自动截取并保留左侧字符串
  * @returns 在原字符串末尾填充至指定长度后的字符串
  */
-function padEnd(str: string, len: number, padString?: string): string {
+function padEnd(str: any, len: number, padString?: string): string {
   str = toString(str)
   if (str.padEnd) return str.padEnd(len, padString)
 
@@ -247,7 +247,7 @@ function toFixed(v: string | number, scale?: number): string {
  * @param count 重复次数
  * @returns 对于null/undefined会返回空字符串
  */
-function repeat(str: string, count: number): string {
+function repeat(str: any, count: number): string {
   str = toString(str)
   count = Number.isFinite(count) ? count : 0
   if (count < 1) return ''
@@ -277,7 +277,7 @@ function repeat(str: string, count: number): string {
  * @returns
  */
 function substring(
-  str: string,
+  str: any,
   indexStart?: number,
   indexEnd?: number
 ): string {
@@ -304,7 +304,7 @@ function substring(
  * @returns 如果以查询子字符串开头返回true，否则返回false
  */
 function startsWith(
-  str: string,
+  str: any,
   searchStr: string,
   position?: number
 ): boolean {
@@ -325,7 +325,7 @@ function startsWith(
  * @param position 索引
  * @returns 如果以查询子字符串开头返回true，否则返回false
  */
-function endsWith(str: string, searchStr: string, position?: number): boolean {
+function endsWith(str: any, searchStr: string, position?: number): boolean {
   return toString(str).endsWith(searchStr, position)
 }
 
@@ -341,7 +341,7 @@ function endsWith(str: string, searchStr: string, position?: number): boolean {
  * @param str
  * @returns 返回新字符串
  */
-function upperCase(str: string): string {
+function upperCase(str: any): string {
   return toString(str).toUpperCase()
 }
 
@@ -357,7 +357,7 @@ function upperCase(str: string): string {
  * @param str
  * @returns 返回新字符串
  */
-function lowerCase(str: string): string {
+function lowerCase(str: any): string {
   return toString(str).toLowerCase()
 }
 
@@ -380,7 +380,7 @@ function lowerCase(str: string): string {
  * @returns 替换后的新字符串
  */
 function replace(
-  str: string,
+  str: any,
   searchValue: RegExp | string,
   replaceValue: string | ((substring: string, ...args: any[]) => string)
 ): string {
@@ -407,14 +407,14 @@ function replace(
  * @since 1.3.0
  */
 function replaceAll(
-  str: string,
+  str: any,
   searchValue: RegExp | string,
   replaceValue: string | ((substring: string, ...args: any[]) => string)
 ): string
-function replaceAll(str: string, replacement: Record<string, any>): string
+function replaceAll(str: any, replacement: Record<string, any>): string
 
 function replaceAll(
-  str: string,
+  str: any,
   searchValue: RegExp | string | Record<string, any>,
   replaceValue?: string | ((substring: string, ...args: any[]) => string)
 ): string {
@@ -470,7 +470,7 @@ const REG_EXP_KEYWORDS: string[] = [
  * @returns 转义后的新字符串
  * @since 1.3.0
  */
-function escapeRegExp(str: string): string {
+function escapeRegExp(str: any): string {
   return toString(str)
     .split('')
     .reduce((a, b) => a + (REG_EXP_KEYWORDS.includes(b) ? '\\' + b : b), '')
@@ -491,7 +491,7 @@ function escapeRegExp(str: string): string {
  * @returns 分割后的数组
  */
 function split(
-  str: string,
+  str: any,
   separator: RegExp | string,
   limit?: number
 ): string[] {
@@ -514,7 +514,7 @@ function split(
  * @param str
  * @returns 返回新字符串
  */
-function kebabCase(str: string): string {
+function kebabCase(str: any): string {
   return lowerCase(_getGrouped(str).join('-'))
 }
 
@@ -584,7 +584,7 @@ function pascalCase(str: string): string {
 }
 
 // eslint-disable-next-line require-jsdoc
-function _getGrouped(str: string): string[] {
+function _getGrouped(str: any): string[] {
   return (
     toString(str).match(
       /[A-Z]{2,}|([^\s-_]([^\s-_A-Z]+)?(?=[\s-_A-Z]))|([^\s-_]+(?=$))/g
@@ -604,7 +604,7 @@ function _getGrouped(str: string): string[] {
  * @param str
  * @returns 返回新字符串
  */
-function lowerFirst(str: string): string {
+function lowerFirst(str: any): string {
   str = toString(str)
   if (str.length < 1) return str
   return str[0].toLowerCase() + str.substring(1)
@@ -622,7 +622,7 @@ function lowerFirst(str: string): string {
  * @param str
  * @returns 返回新字符串
  */
-function upperFirst(str: string): string {
+function upperFirst(str: any): string {
   str = toString(str)
   if (str.length < 1) return str
   return str[0].toUpperCase() + str.substring(1)
@@ -642,7 +642,7 @@ function upperFirst(str: string): string {
  * @param [fromIndex=0] 起始索引
  * @returns 第一个匹配搜索字符串的位置索引或-1
  */
-function indexOf(str: string, search: string, fromIndex?: number): number {
+function indexOf(str: any, search: string, fromIndex?: number): number {
   str = toString(str)
   return str.indexOf(search, fromIndex || 0)
 }
@@ -661,7 +661,7 @@ function indexOf(str: string, search: string, fromIndex?: number): number {
  * @param [fromIndex=Infinity] 起始索引，从起始索引位置向左查找指定字符串
  * @returns 最后一个匹配搜索字符串的位置索引或-1
  */
-function lastIndexOf(str: string, search: string, fromIndex?: number): number {
+function lastIndexOf(str: any, search: string, fromIndex?: number): number {
   str = toString(str)
   return str.lastIndexOf(search, fromIndex || Infinity)
 }
@@ -683,7 +683,7 @@ function lastIndexOf(str: string, search: string, fromIndex?: number): number {
  * @returns 匹配返回true
  * @since 0.19.0
  */
-function test(str: string, pattern: RegExp | string, flags?: string): boolean {
+function test(str: any, pattern: RegExp | string, flags?: string): boolean {
   let regExp = pattern
   if (!isRegExp(regExp)) {
     regExp = new RegExp(pattern, flags)
@@ -715,7 +715,7 @@ function test(str: string, pattern: RegExp | string, flags?: string): boolean {
  * @since 1.3.0
  */
 function truncate(
-  str: string,
+  str: any,
   len: number,
   options?: { omission?: '...'; separator?: string | RegExp }
 ) {

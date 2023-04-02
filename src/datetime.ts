@@ -334,7 +334,7 @@ const Locale: Record<
     days: ['一', '二', '三', '四', '五', '六', '日'].map((v) => '星期' + v),
   },
 }
-let Lang = navigator.language
+let Lang = globalThis.navigator?.language || 'zh-CN'
 /**
  * 设置不同locale的配置
  * @param lang 语言标记，默认跟随系统

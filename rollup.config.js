@@ -92,7 +92,6 @@ const targets = [
               'LICENSE',
               'README.md',
               'package.json',
-              '.npmignore',
             ],
             dest: 'dist',
           },
